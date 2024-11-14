@@ -5,17 +5,18 @@ import {
   getBookingById,
   updateBooking,
   deleteBooking,
-} from '../controllers/bookingController.js';
-
+} from '../Controller/bookingController.js';
+import validateRequest from '../middleware/validateRequest.js';
+import bookingValidationSchema from '../validation/bookingValidation.js';
 const router = express.Router();
 
 router.route('/')
   .get(getAllBookings)      
-  .post(createBooking);     
+  .post(validateRequest(bookingValidationSchema),createBooking);     
 
 router.route('/:id')
   .get(getBookingById)    
-  .patch(updateBooking)   
+  .put(updateBooking)   
   .delete(deleteBooking);  
 
 export default router;

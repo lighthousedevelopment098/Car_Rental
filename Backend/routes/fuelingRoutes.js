@@ -5,17 +5,18 @@ import {
   getFuelingById,
   updateFueling,
   deleteFueling,
-} from '../controllers/fuelingController.js';
-
+} from '../Controller/fuelingController.js';
+import validateRequest from '../middleware/validateRequest.js';
+import fuelingValidationSchema from '../validation/fuelingValidation.js';
 const router = express.Router();
 
 router.route('/')
   .get(getAllFuelings)   
-  .post(createFueling);     
+  .post(validateRequest(fuelingValidationSchema),createFueling);     
 
 router.route('/:id')
   .get(getFuelingById)        
-  .patch(updateFueling)  
+  .put(updateFueling)  
   .delete(deleteFueling);   
 
 export default router;

@@ -4,7 +4,7 @@ import AppError from "../utils/appError.js"
 import { sendEmail } from "../Config/email.js";
 export const sendPreDueDateReminder = catchAsync(async (req, res, next) => {
     const upcomingDueDate = new Date();
-    upcomingDueDate.setDate(upcomingDueDate.getDate() + 2); // 2 days before due date
+    upcomingDueDate.setDate(upcomingDueDate.getDate() + 2);
   
     const cards = await db('cards')
       .where('due_date', '<=', upcomingDueDate)
@@ -12,7 +12,7 @@ export const sendPreDueDateReminder = catchAsync(async (req, res, next) => {
   
     for (const card of cards) {
       await sendEmail(
-        'user@example.com', // Replace with card holder's email
+        'user@example.com',
         'Upcoming Payment Due Reminder',
         `Dear ${card.holder_name}, your payment for ${card.bank_name} card is due on ${card.due_date}. Please ensure timely payment to avoid penalties.`
       );
@@ -24,7 +24,6 @@ export const sendPreDueDateReminder = catchAsync(async (req, res, next) => {
     });
   });
   
-  // Send notification on the due date
   export const sendDueDateAlert = catchAsync(async (req, res, next) => {
     const today = new Date();
   
@@ -34,7 +33,7 @@ export const sendPreDueDateReminder = catchAsync(async (req, res, next) => {
   
     for (const card of cards) {
       await sendEmail(
-        'user@example.com', // Replace with card holder's email
+        'user@example.com', 
         'Payment Due Alert',
         `Dear ${card.holder_name}, today is the due date for your ${card.bank_name} card payment. Please make your payment to avoid late fees.`
       );

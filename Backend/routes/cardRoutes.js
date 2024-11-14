@@ -5,17 +5,18 @@ import {
   getCardById,
   updateCard,
   deleteCard,
-} from '../controllers/cardController.js';
-
+} from '../Controller/cardController.js';
+import validateRequest from '../middleware/validateRequest.js';
+import cardValidationSchema from '../validation/cardValidation.js';
 const router = express.Router();
 
 router.route('/')
   .get(getAllCards)     
-  .post(createCard);     
+  .post(validateRequest(cardValidationSchema),createCard);     
 
 router.route('/:id')
   .get(getCardById)  
-  .patch(updateCard)      
+  .put(updateCard)      
   .delete(deleteCard);   
 
 export default router;

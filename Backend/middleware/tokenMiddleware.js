@@ -1,8 +1,10 @@
 import jwt from 'jsonwebtoken';
+import db from '../Config/db.js';
+
 // Generate Access Token
 export const generateAccessToken = (user) => {
     return jwt.sign(
-        { id: user._id, role: user.role },
+        { id: user.id, role: user.role },
         process.env.JWT_ACCESS_SECRET,
         { expiresIn: '1d' }  
     );
@@ -11,17 +13,20 @@ export const generateAccessToken = (user) => {
 // Generate Refresh Token
 export const generateRefreshToken = (user) => {
     return jwt.sign(
-        { id: user._id },
+        { id: user.id },
         process.env.JWT_REFRESH_SECRET,
         { expiresIn: '12h' }  
     );
 };
 
-// Middleware to save or update tokens in the user model
+// Middleware to save or update tokens in the database for the user
 export const saveTokens = async (user, accessToken, refreshToken) => {
-    user.accessToken = accessToken;
-    user.refreshToken = refreshToken;
-    await user.save();
+    await db('admin')
+        .where('id', user.id)
+        .update({
+            accessToken,
+            refreshToken,
+        });
 };
 
 // Middleware to handle token creation and saving during user login/signup
@@ -33,15 +38,14 @@ export const handleTokenGeneration = async (user, res) => {
     
     return res.status(200).json({
         success: true,
-        doc: [
-        {accessToken},
-        {refreshToken},
-        {user: {
-            id: user._id,
-            username: user.username,
-            email: user.email,
+        doc: {
+            accessToken,
+            refreshToken,
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+            }
         }
-    }
-    ]
     });
 };

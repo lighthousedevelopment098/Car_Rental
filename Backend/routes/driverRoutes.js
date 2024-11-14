@@ -5,17 +5,18 @@ import {
   getDriverById,
   updateDriver,
   deleteDriver,
-} from '../controllers/driverController.js';
-
+} from '../Controller/driverController.js';
+import validateRequest from '../middleware/validateRequest.js';
+import driverValidationSchema from '../validation/driverValidation.js';
 const router = express.Router();
 
 router.route('/')
   .get(getAllDrivers)      
-  .post(createDriver);    
+  .post(validateRequest(driverValidationSchema),createDriver);    
 
 router.route('/:id')
   .get(getDriverById)         
-  .patch(updateDriver)  
+  .put(updateDriver)  
   .delete(deleteDriver);      
 
 export default router;

@@ -1,17 +1,18 @@
 import db from "../Config/db.js";
 import catchAsync from '../utils/catchAsync.js';
-import AppError from "../utils/appError.js"
+import AppError from "../utils/appError.js";
 
-// Create a new car
 export const createCar = catchAsync(async (req, res, next) => {
   const { make, model, variant, registration_no, documents } = req.body;
+
+  const documentsToSave = documents ? JSON.stringify(documents) : null;
 
   const [car] = await db('cars').insert({
     make,
     model,
     variant,
     registration_no,
-    documents,
+    documents: documentsToSave, 
   }).returning('*');
 
   res.status(201).json({
@@ -22,20 +23,24 @@ export const createCar = catchAsync(async (req, res, next) => {
   });
 });
 
-// Get all cars
 export const getAllCars = catchAsync(async (req, res, next) => {
   const cars = await db('cars').select('*');
 
+  // Optionally parse documents back to JSON if needed
+  const parsedCars = cars.map(car => ({
+    ...car,
+    documents: car.documents ? JSON.parse(car.documents) : null, // Parse if documents exist
+  }));
+
   res.status(200).json({
     status: 'success',
-    results: cars.length,
+    results: parsedCars.length,
     data: {
-      cars,
+      cars: parsedCars,
     },
   });
 });
 
-// Get a single car by ID
 export const getCarById = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const car = await db('cars').where({ id }).first();
@@ -43,6 +48,9 @@ export const getCarById = catchAsync(async (req, res, next) => {
   if (!car) {
     return next(new AppError('Car not found', 404));
   }
+
+  // Parse documents back to JSON if it exists
+  car.documents = car.documents ? JSON.parse(car.documents) : null;
 
   res.status(200).json({
     status: 'success',
@@ -52,10 +60,12 @@ export const getCarById = catchAsync(async (req, res, next) => {
   });
 });
 
-// Update a car by ID
 export const updateCar = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const { make, model, variant, registration_no, documents } = req.body;
+
+  // Check if documents are passed and stringify if exists
+  const documentsToSave = documents ? JSON.stringify(documents) : null;
 
   const [updatedCar] = await db('cars')
     .where({ id })
@@ -64,13 +74,16 @@ export const updateCar = catchAsync(async (req, res, next) => {
       model,
       variant,
       registration_no,
-      documents,
+      documents: documentsToSave, // Save documents as stringified JSON
     })
     .returning('*');
 
   if (!updatedCar) {
     return next(new AppError('Car not found', 404));
   }
+
+  // Parse documents back to JSON if needed
+  updatedCar.documents = updatedCar.documents ? JSON.parse(updatedCar.documents) : null;
 
   res.status(200).json({
     status: 'success',
@@ -80,7 +93,6 @@ export const updateCar = catchAsync(async (req, res, next) => {
   });
 });
 
-// Delete a car by ID
 export const deleteCar = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const deleted = await db('cars').where({ id }).del();

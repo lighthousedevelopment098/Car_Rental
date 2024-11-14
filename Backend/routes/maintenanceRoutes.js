@@ -5,17 +5,18 @@ import {
   getMaintenanceById,
   updateMaintenance,
   deleteMaintenance,
-} from '../controllers/maintenanceController.js';
-
+} from '../Controller/maintenanceController.js';
+import validateRequest from '../middleware/validateRequest.js';
+import maintenanceValidationSchema from '../validation/maintenanceValidation.js';
 const router = express.Router();
 
 router.route('/')
   .get(getAllMaintenanceRecords)    
-  .post(createMaintenance);          
+  .post(validateRequest(maintenanceValidationSchema),createMaintenance);          
 
 router.route('/:id')
   .get(getMaintenanceById)        
-  .patch(updateMaintenance)          
+  .put(updateMaintenance)          
   .delete(deleteMaintenance);     
 
 export default router;

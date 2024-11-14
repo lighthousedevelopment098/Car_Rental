@@ -37,7 +37,6 @@ export const createCard = catchAsync(async (req, res, next) => {
     });
   });
   
-  // Get all card records
   export const getAllCards = catchAsync(async (req, res, next) => {
     const cards = await db('cards').select('*');
   
@@ -50,7 +49,6 @@ export const createCard = catchAsync(async (req, res, next) => {
     });
   });
   
-  // Get a single card by ID
   export const getCardById = catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const card = await db('cards').where({ id }).first();
@@ -67,7 +65,6 @@ export const createCard = catchAsync(async (req, res, next) => {
     });
   });
   
-  // Update a card by ID
   export const updateCard = catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const {
@@ -111,7 +108,6 @@ export const createCard = catchAsync(async (req, res, next) => {
     });
   });
   
-  // Delete a card by ID
   export const deleteCard = catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const deleted = await db('cards').where({ id }).del();

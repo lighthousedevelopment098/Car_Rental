@@ -5,17 +5,18 @@ import {
   getCarById,
   updateCar,
   deleteCar,
-} from '../controllers/carController.js';
-
+} from '../Controller/carController.js';
+import validateRequest from '../middleware/validateRequest.js';
+import carValidationSchema from '../validation/carValidation.js';
 const router = express.Router();
 
 router.route('/')
   .get(getAllCars)     
-  .post(createCar);      
+  .post(validateRequest(carValidationSchema),createCar);      
 
 router.route('/:id')
   .get(getCarById)       
-  .patch(updateCar)    
+  .put(updateCar)    
   .delete(deleteCar);    
 
 export default router;
