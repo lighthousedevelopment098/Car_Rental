@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { AiOutlineExclamationCircle } from 'react-icons/ai';
+import { useCreateMaintenanceMutation } from '../../store/slices/maintenancesApiSlice';
 
 function CarMaintenanceForm() {
+
+  const [createMaintenance] = useCreateMaintenanceMutation();
   const [formData, setFormData] = useState({
     car_id: '',
     date: '',
@@ -24,10 +27,15 @@ function CarMaintenanceForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     console.log(formData);
-    // Add submit logic here, e.g., API call
+    try {
+      await createMaintenance(formData).unwrap(); 
+      console.log('Maintenance record created successfully');
+    } catch (err) {
+      console.error('Error creating maintenance record', err);
+    }
   };
 
   return (

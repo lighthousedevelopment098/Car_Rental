@@ -1,44 +1,11 @@
 import React from "react";
+import { useGetAllCardsQuery } from "../../store/slices/cardsApiSlice";
 
 function CardPaymentList() {
-  const paymentData = [
-    {
-      bank_name: "Bank of America",
-      holder_name: "John Doe",
-      card_number: "**** **** **** 1234",
-      card_charge: "$50",
-      due_date: "2024-12-15",
-      year_fee: "$100",
-      status: "Pending",
-      paid_amount: "$50",
-      extra_pay: "$10",
-      less_pay: "$0",
-    },
-    {
-      bank_name: "Chase",
-      holder_name: "Jane Smith",
-      card_number: "**** **** **** 5678",
-      card_charge: "$75",
-      due_date: "2024-11-30",
-      year_fee: "$120",
-      status: "Paid",
-      paid_amount: "$75",
-      extra_pay: "$5",
-      less_pay: "$0",
-    },
-    {
-      bank_name: "Wells Fargo",
-      holder_name: "Robert Brown",
-      card_number: "**** **** **** 4321",
-      card_charge: "$120",
-      due_date: "2024-12-05",
-      year_fee: "$150",
-      status: "Pending",
-      paid_amount: "$100",
-      extra_pay: "$20",
-      less_pay: "$0",
-    },
-  ];
+  const { data: paymentData, error, isLoading } = useGetAllCardsQuery();
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error fetching card data.</p>;
 
   return (
     <div className="p-6 bg-gray-100 w-96 overflow-x-scroll md:w-full scroll-smooth">

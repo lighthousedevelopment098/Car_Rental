@@ -1,6 +1,7 @@
 
 
 import React, { useState } from 'react';
+import { useCreateCardMutation } from '../../store/slices/cardsApiSlice';
 
 const CardDetails = () => {
   const initialState = {
@@ -18,14 +19,14 @@ const CardDetails = () => {
 
   const [formData, setFormData] = useState(initialState);
   const [validationError, setValidationError] = useState('');
-
+const [createCard] = useCreateCardMutation();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     if (validationError) setValidationError(''); // Clear validation error on input change
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
     // Basic validation: Check if any field is empty
@@ -33,11 +34,14 @@ const CardDetails = () => {
       setValidationError('All fields are required');
       return;
     }
+    try {
 
-    console.log('Form Data Submitted:', formData);
-    // Reset form after submission
-    setFormData(initialState);
-    setValidationError('');
+      await createCard(formData).unwrap(); 
+      setFormData(initialState);
+      setValidationError('');
+    } catch (err) {
+      console.error('Error:', err);
+    }
   };
 
   return (

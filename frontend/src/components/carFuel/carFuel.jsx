@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { AiOutlineExclamationCircle } from "react-icons/ai";
+import { useCreateFuelingMutation } from '../../store/slices/fuelingApiSlice';
 
 const FuelingAndMaintenanceForm = () => {
+
+  const [createFueling] = useCreateFuelingMutation();
   // State for fueling
   const [fuelingData, setFuelingData] = useState({
     booking_id: '',
@@ -22,21 +25,26 @@ const FuelingAndMaintenanceForm = () => {
   };
 
   // Submit form data
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Log the data to console instead of sending a request
-    console.log('Fueling Data:', fuelingData);
+    try {
+      // Trigger the create fueling mutation
+      await createFueling(fuelingData).unwrap();
 
-    // Reset form
-    setFuelingData({
-      booking_id: '',
-      customer_paid_by: '',
-      verified: false,
-      total_amount_paid: 0.0,
-      remaining_amount_left: 0.0,
-      bill_paid: false,
-    });
+      // Reset form upon success
+      setFuelingData({
+        booking_id: '',
+        customer_paid_by: '',
+        verified: false,
+        total_amount_paid: 0.0,
+        remaining_amount_left: 0.0,
+        bill_paid: false,
+      });
+
+    } catch (err) {
+      console.error("Error submitting fueling data:", err);
+    }
   };
 
   return (

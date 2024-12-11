@@ -1,36 +1,11 @@
 import React from "react";
+import { useGetAllBookingsQuery } from "../../store/slices/bookingsApi";
 
 function CarBookingList() {
-  const bookingData = [
-    {
-      car_id: "C001",
-      username: "John Doe",
-      company_name: "XYZ Rentals",
-      start_date: "2024-11-20",
-      end_date: "2024-11-25",
-      price_per_day: 50,
-      with_driver: true,
-      driver_details: {
-        name: "Michael Johnson",
-        license_number: "DL12345",
-        contact: "123-456-7890",
-      },
-      agreement_document: "https://via.placeholder.com/300?text=Agreement+Document+C001",
-      car_picture: "https://via.placeholder.com/300?text=Car+Picture+C001",
-    },
-    {
-      car_id: "C002",
-      username: "Jane Smith",
-      company_name: "ABC Travels",
-      start_date: "2024-11-18",
-      end_date: "2024-11-22",
-      price_per_day: 60,
-      with_driver: false,
-      driver_details: null,
-      agreement_document: "https://via.placeholder.com/300?text=Agreement+Document+C002",
-      car_picture: "https://via.placeholder.com/300?text=Car+Picture+C002",
-    },
-  ];
+  const { data: bookingData, error, isLoading } = useGetAllBookingsQuery();
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading bookings</p>;
 
   return (
     <div className="p-6 bg-gray-100  w-96 overflow-x-scroll  md:w-full scroll-smooth">

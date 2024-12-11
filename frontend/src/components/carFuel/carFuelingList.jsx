@@ -1,58 +1,17 @@
 import React from "react";
+import { useGetAllFuelingsQuery } from "../../store/slices/fuelingApiSlice";
 
 function FuelingList() {
-  const fuelingData = [
-    {
-      booking_id: "B001",
-      customer_paid_by: "Customer",
-      verified: true,
-      total_amount_paid: 100.50,
-      remaining_amount_left: 20.00,
-      bill_paid: true,
-      created_at: "2024-11-20 10:00:00",
-     
-    },
-    {
-      booking_id: "B002",
-      customer_paid_by: "Owner",
-      verified: false,
-      total_amount_paid: 150.75,
-      remaining_amount_left: 0.00,
-      bill_paid: false,
-      created_at: "2024-11-18 09:30:00",
-     
-    },
-    {
-      booking_id: "B003",
-      customer_paid_by: "Customer",
-      verified: true,
-      total_amount_paid: 75.30,
-      remaining_amount_left: 10.00,
-      bill_paid: true,
-      created_at: "2024-11-22 11:00:00",
-     
-    },
-    {
-      booking_id: "B004",
-      customer_paid_by: "Owner",
-      verified: true,
-      total_amount_paid: 120.00,
-      remaining_amount_left: 30.00,
-      bill_paid: false,
-      created_at: "2024-11-19 14:30:00",
-     
-    },
-    {
-      booking_id: "B005",
-      customer_paid_by: "Customer",
-      verified: true,
-      total_amount_paid: 200.00,
-      remaining_amount_left: 50.00,
-      bill_paid: true,
-      created_at: "2024-11-17 08:30:00",
-    
-    },
-  ];
+  const { data: fuelingData, error, isLoading } = useGetAllFuelingsQuery();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading fueling data!</div>;
+  }
+
 
   return (
     <div className="p-6 bg-gray-100 w-96 overflow-x-scroll md:w-full scroll-smooth">

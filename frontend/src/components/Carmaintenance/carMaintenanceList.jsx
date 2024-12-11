@@ -1,48 +1,18 @@
 import React from "react";
+import { useGetAllMaintenanceRecordsQuery } from "../../store/slices/maintenancesApiSlice";
 
 function CarMaintenenceList() {
-  const serviceData = [
-    {
-      car_id: "C001",
-      date: "2024-11-20",
-      chassis_no: "CH1234567890",
-      engine: "E123456",
-      reg_no: "ABC1234",
-      cell: "123-456-7890",
-      type: "Engine Repair",
-      labour: "5 hours",
-      total_labour_cost: 100,
-      total_parts_cost: 150,
-      grand_total: 250,
-    },
-    {
-      car_id: "C002",
-      date: "2024-11-21",
-      chassis_no: "CH0987654321",
-      engine: "E987654",
-      reg_no: "XYZ5678",
-      cell: "987-654-3210",
-      type: "Transmission Repair",
-      labour: "6 hours",
-      total_labour_cost: 120,
-      total_parts_cost: 200,
-      grand_total: 320,
-    },
-    {
-      car_id: "C003",
-      date: "2024-11-22",
-      chassis_no: "CH1122334455",
-      engine: "E112233",
-      reg_no: "DEF6789",
-      cell: "555-123-4567",
-      type: "Brake Service",
-      labour: "3 hours",
-      total_labour_cost: 80,
-      total_parts_cost: 50,
-      grand_total: 130,
-    },
-  ];
+    // Fetching data using the API query hook
+    const { data: serviceData, isLoading, isError, error } = useGetAllMaintenanceRecordsQuery();
 
+    if (isLoading) {
+      return <div>Loading...</div>;
+    }
+  
+    if (isError) {
+      return <div>Error: {error.message}</div>;
+    }
+  
   return (
     <div className="p-6 bg-gray-100 w-96 overflow-x-scroll md:w-full scroll-smooth">
       <h1 className="text-2xl font-bold text-gray-700 mb-6">Car Service Data</h1>
