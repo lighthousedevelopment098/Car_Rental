@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { Outlet } from "react-router-dom";
-import SideBar from "../components/Sidebar/Sidebar";
-import MobileMenu from "../components/Sidebar/MobileMenu";
-import Navbar from "../components/Header/Navbar";
+
+
 import { ToastContainer } from "react-toastify";
+import SideBar from "../Components/sidebar/sideBar";
+import MobileMenu from "../Components/sidebar/mobileMenu";
+import Navbar from "../Components/navbar";
 
 const RootLayout = () => {
 	const [sidebarOpen, setSidebarOpen] = useState(true);

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { HiMenu } from "react-icons/hi";
-import SideBar from "./Sidebar";
+import SideBar from "./sideBar";
+
 
 const MobileMenu = ({ isSidebarOpen }) => {
   const [isOpen, setIsOpen] = useState(false);

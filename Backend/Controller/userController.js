@@ -91,6 +91,7 @@ export const login = catchAsync(async (req, res, next) => {
             id: user.id,
             username: user.username,
             email: user.email,
+            accessToken : user.accessToken,
         },
     });
 });

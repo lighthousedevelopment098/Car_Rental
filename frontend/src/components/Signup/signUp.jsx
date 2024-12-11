@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-
-function SignUpForm() {
+import { useSignupMutation } from '../../store/slices/userApiSlice';
+import { useNavigate } from "react-router-dom";
+function SignUpForm({ toggleAuth }) {
+  const [signup] = useSignupMutation();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -23,9 +26,31 @@ function SignUpForm() {
     console.log(formData);
   };
 
+  const handleSignUp = async(e) => {
+    e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    try {
+     const response =  await signup({
+        username: formData.fullName,
+        email: formData.email,
+        // phoneNumber: formData.phoneNumber,
+        password: formData.password,
+      }).unwrap();
+      alert("Account created successfully!");
+      console.log(response)
+      navigate("/login");
+    } catch (error) {
+      console.error("Error during signup:", error);
+      alert(error?.data?.message || "Signup failed. Please try again.");
+    }
+  }
   return (
     <div className="flex justify-center items-center  bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-gray-200 p-8 rounded-md shadow-lg w-full">
+      <form onSubmit={handleSignUp} className="bg-gray-200 p-8 rounded-md shadow-lg w-full">
       <div className="w-full h-56 overflow-hidden rounded-md relative mb-6">
             <img
               src="https://media.istockphoto.com/id/1463013729/photo/online-registration-form-for-modish-form-filling.jpg?s=612x612&w=0&k=20&c=Fnx06haU4IHYLcRpy9Po_TBknvBqVjicGuUWkGu8e6Y="
@@ -117,7 +142,7 @@ function SignUpForm() {
         
         
         <div className="mt-4 text-center">
-          <p className="text-gray-500">Already have an account? <a href="/signin" className="text-blue-600">Sign In</a></p>
+          <p className="text-gray-500">Already have an account? <a href="/login" className="text-blue-600" onClick={toggleAuth}>Sign In</a></p>
         </div>
       </form>
     </div>

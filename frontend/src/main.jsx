@@ -5,8 +5,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles"; // Import cre
 // import router from "./router";
 import router from "./router";
 
-import { Provider } from "react-redux";
-import store from "./redux/store";
+import ReduxProvider from "./store/ReduxProvider"
 
 // Create a theme instance
 const theme = createTheme({
@@ -23,9 +22,9 @@ const theme = createTheme({
 
 createRoot(document.getElementById("root")).render(
 	<ThemeProvider theme={theme}>
-		<Provider store={store}>
+		<ReduxProvider>
 			<RouterProvider router={router} />
-		</Provider>
+		</ReduxProvider>
 	</ThemeProvider>
 
 );
