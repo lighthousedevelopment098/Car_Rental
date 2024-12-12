@@ -12,10 +12,16 @@ import CarBookingList from "./Components/Carbooking/carBookingList";
 import CarDetailsTable from "./Components/Car/carList";
 import CardPaymentList from "./Components/Card/cardList";
 import FuelingList from "./Components/CarFuel/carFuelingList";
-import CarMaintenenceList from "./Components/Carmaintenance/carMaintenanceList";
+
 import CardDetails from "./Components/Card/Card";
 import SignUpForm from "./Components/Signup/signUp";
 import RootLayout from "./_root/RootLayout";
+import CarMaintenenceList from "./components/Carmaintenance/carMaintenanceList";
+import UpdateCarForm from "./components/Car/carUpdate";
+import CarBookingUpdate from "./components/carBooking/bookingUpdate";
+import CardUpdate from "./components/Card/cardUpdate";
+import FuelingUpdate from "./components/carFuel/fuelUpdate";
+import CarMaintenanceUpdate from "./components/Carmaintenance/maintainenceUpdate";
 
 const router = createBrowserRouter([
 	{
@@ -52,6 +58,11 @@ const router = createBrowserRouter([
 
 				element: <CarBookingList />,
 			},
+			{
+				path: "/CarBookingUpdate/:id",
+
+				element: <CarBookingUpdate />,
+			},
 			
 			{
 				path: "/car-Detail",
@@ -64,6 +75,11 @@ const router = createBrowserRouter([
 				element: <CarDetailsTable />,
 			},
 			{
+				path: "/UpdateCarForm/:id",
+
+				element: <UpdateCarForm />,
+			},
+			{
 				path: "/card-Details",
 
 				element: <CardDetails />,
@@ -72,6 +88,11 @@ const router = createBrowserRouter([
 				path: "/card-List",
 
 				element: <CardPaymentList />,
+			},
+			{
+				path: "/CardUpdate/:id",
+
+				element: <CardUpdate />,
 			},
 			{
 				path: "/car-fuel",
@@ -84,6 +105,11 @@ const router = createBrowserRouter([
 				element: <FuelingList />,
 			},
 			{
+				path: "/FuelingUpdate/:id",
+
+				element: <FuelingUpdate />,
+			},
+			{
 				path: "/car-mainteinance",
 
 				element: <CarMaintenanceForm />,
@@ -92,6 +118,11 @@ const router = createBrowserRouter([
 				path: "/maintenance-List",
 
 				element: <CarMaintenenceList />,
+			},
+			{
+				path: "/CarMaintenanceUpdate/:id",
+
+				element: <CarMaintenanceUpdate />,
 			},
 			
 		
